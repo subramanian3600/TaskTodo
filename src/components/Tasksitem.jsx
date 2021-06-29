@@ -1,16 +1,13 @@
 import {
-  Button,
-  ListItem,
-  Avatar,
-  ListItemText,
-  Grid,
-  List,
-  ListItemSecondaryAction,
-  ListItemAvatar,
-} from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import FolderIcon from "@material-ui/icons/Folder";
-import IconButton from "@material-ui/core/IconButton";
+  TaskLists,
+  TaskItem,
+  TaskName,
+  TaskProgress,
+  TaskCheckButton,
+  Task,
+  DelButton,
+} from "./Styles.js";
+
 import React from "react";
 import { db } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
@@ -30,43 +27,49 @@ function Tasksitem({ task, inprogress, id, username }) {
     <>
       {currentUser.uid === username && (
         <div style={{ display: "flex" }}>
-          <Grid item xs={12} md={15}>
-            <div>
-              <List>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar style={{ "background-color": "blue" }}>
-                      <Button
-                        onClick={toggleinprogress}
-                        style={{
-                          width: "30px",
-                          height: "30px",
-                          padding: "10px",
-                          'color':'white',
-                        }}
-                      >
-                        {inprogress ? "✓" : "x"}
-                      </Button>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={task}
-                    secondary={inprogress ? "in progress" : "completed"}
+          <TaskLists>
+            <TaskItem>
+              <TaskCheckButton onClick={toggleinprogress}>
+                {inprogress ? (
+                  ""
+                ) : (
+                  <svg
+                    width="50"
+                    height="33"
+                    viewBox="0 0 50 33"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M48.8255 0.822966C48.1006 0.124533 46.9136 0.113293 46.1741 0.797891L16.8992 28.4464L3.82545 16.099C3.09646 15.4241 1.93008 15.4241 1.20109 16.099C0.461577 16.7834 0.449675 17.9044 1.17431 18.6029L15.5737 32.2023C15.9248 32.535 16.4021 32.7217 16.8994 32.7211C17.3968 32.7215 17.8738 32.5348 18.2249 32.2023L48.8255 3.30174C49.54 2.61325 49.54 1.51146 48.8255 0.822966Z"
+                      fill="#FAFAFA"
+                    />
+                  </svg>
+                )}
+              </TaskCheckButton>
+              <Task>
+                <TaskName>{task}</TaskName>
+                <TaskProgress>
+                  {inprogress ? "In progress" : "Well Completed"}
+                </TaskProgress>
+              </Task>
+
+              <DelButton onClick={deleteTask}>
+                <svg
+                  width="40"
+                  height="43"
+                  viewBox="0 0 40 43"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.9942 32.25C17.4225 32.25 17.8332 32.0612 18.1361 31.7252C18.4389 31.3892 18.609 30.9335 18.609 30.4583V19.7083C18.609 19.2332 18.4389 18.7774 18.1361 18.4414C17.8332 18.1054 17.4225 17.9167 16.9942 17.9167C16.5659 17.9167 16.1552 18.1054 15.8523 18.4414C15.5495 18.7774 15.3793 19.2332 15.3793 19.7083V30.4583C15.3793 30.9335 15.5495 31.3892 15.8523 31.7252C16.1552 32.0612 16.5659 32.25 16.9942 32.25ZM33.1426 10.75H26.6832V8.95833C26.6832 7.53279 26.1728 6.16564 25.2643 5.15763C24.3558 4.14963 23.1236 3.58333 21.8387 3.58333H18.609C17.3242 3.58333 16.092 4.14963 15.1834 5.15763C14.2749 6.16564 13.7645 7.53279 13.7645 8.95833V10.75H7.30513C6.87685 10.75 6.46611 10.9388 6.16327 11.2748C5.86043 11.6108 5.69029 12.0665 5.69029 12.5417C5.69029 13.0168 5.86043 13.4726 6.16327 13.8086C6.46611 14.1446 6.87685 14.3333 7.30513 14.3333H8.91998V34.0417C8.91998 35.4672 9.43038 36.8344 10.3389 37.8424C11.2474 38.8504 12.4797 39.4167 13.7645 39.4167H26.6832C27.9681 39.4167 29.2003 38.8504 30.1088 37.8424C31.0174 36.8344 31.5278 35.4672 31.5278 34.0417V14.3333H33.1426C33.5709 14.3333 33.9816 14.1446 34.2845 13.8086C34.5873 13.4726 34.7575 13.0168 34.7575 12.5417C34.7575 12.0665 34.5873 11.6108 34.2845 11.2748C33.9816 10.9388 33.5709 10.75 33.1426 10.75ZM16.9942 8.95833C16.9942 8.48315 17.1643 8.02744 17.4672 7.69143C17.77 7.35543 18.1807 7.16667 18.609 7.16667H21.8387C22.267 7.16667 22.6777 7.35543 22.9806 7.69143C23.2834 8.02744 23.4536 8.48315 23.4536 8.95833V10.75H16.9942V8.95833ZM28.2981 34.0417C28.2981 34.5168 28.128 34.9726 27.8251 35.3086C27.5223 35.6446 27.1115 35.8333 26.6832 35.8333H13.7645C13.3362 35.8333 12.9255 35.6446 12.6226 35.3086C12.3198 34.9726 12.1497 34.5168 12.1497 34.0417V14.3333H28.2981V34.0417ZM23.4536 32.25C23.8818 32.25 24.2926 32.0612 24.5954 31.7252C24.8983 31.3892 25.0684 30.9335 25.0684 30.4583V19.7083C25.0684 19.2332 24.8983 18.7774 24.5954 18.4414C24.2926 18.1054 23.8818 17.9167 23.4536 17.9167C23.0253 17.9167 22.6145 18.1054 22.3117 18.4414C22.0089 18.7774 21.8387 19.2332 21.8387 19.7083V30.4583C21.8387 30.9335 22.0089 31.3892 22.3117 31.7252C22.6145 32.0612 23.0253 32.25 23.4536 32.25Z"
+                    fill="#FF0000"
                   />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      color="secondary"
-                      onClick={deleteTask}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </List>
-            </div>
-          </Grid>
+                </svg>
+              </DelButton>
+            </TaskItem>
+          </TaskLists>
         </div>
       )}
     </>

@@ -1,7 +1,5 @@
 .App {
   height: 100vh;
-  overflow: auto;
-  text-align: center;
   background-color: #d8e3e7;
 }
 .tasks_list {
@@ -17,7 +15,7 @@
   font-size: 40px;
   color: #126e82;
 }
-.tasks_textfield_button{
+.tasks_textfield_button {
   background-color: #485461;
   color: white;
   border-radius: 2px;
